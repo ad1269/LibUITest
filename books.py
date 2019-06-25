@@ -2,11 +2,19 @@ import sys
 import pandas as pd
 import numpy as np
 
+from os import path
+import zipfile
+
 ### SETUP CODE ###
 book_data = None
 
 def load_books():
 	global book_data
+	if not np.all(list(map(path.exists, ["BX-Books.csv", "BX-Book-Ratings.csv", "BX-Users.csv"]))):
+		data = zipfile.ZipFile("Book-Data.zip")
+		data.extractall()
+
+
 	book_data = pd.read_csv("BX-Books.csv", sep=";", encoding="latin-1", error_bad_lines=False, warn_bad_lines=False)
 
 ### FUNCTIONALITY ###
@@ -94,4 +102,4 @@ def parse_args(argc, argv):
 
 if __name__ == '__main__':
 	load_books()
-	parse_args(len(sys.argv), sys.argv)
+	#parse_args(len(sys.argv), sys.argv)
